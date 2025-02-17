@@ -16,7 +16,7 @@ struct CharacterView: View {
             // Adding a scroll view reader allows us to autoscroll to the bottom.
             ScrollViewReader { proxy in
                 ZStack(alignment: .top) {
-                    Image(show.lowercased().replacingOccurrences(of: " ", with: ""))
+                    Image(show.removeCaseAndSpace())
                         .resizable()
                         .scaledToFit()
                     
@@ -127,5 +127,5 @@ struct CharacterView: View {
 }
 
 #Preview {
-    CharacterView(character: ViewModel().character, show: "Breaking Bad")
+    CharacterView(character: ViewModel().character, show: Constants.bbName)
 }

@@ -22,6 +22,8 @@ struct BBQuotesApp: App {
  ✅ Utilized all character images on Character View
  ✅ On CharcterView, auto-scroll to bottom after status is shown.
  - Fetch Episode Data
- - Extend String to get rid of long image and color names
- - Create static constancs for show names.
+ ✅ Extend String to get rid of long image and color names
+ ✅ Create static constants for show names.
  */
+
+
