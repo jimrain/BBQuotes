@@ -29,7 +29,7 @@ struct BBQuotesApp: App {
 /*
  Coding Challenges:
  ✅ Fetch a quote automatically when the app launchs.
- - When you fetch a quote have it show a random image instead of the first one.
+ ✅ When you fetch a quote have it show a random image instead of the first one.
  - Fetch a random Character
  - On the character screen,
  - Sometimes have it randomly fetch a simpsons quote instead of a bb quote.

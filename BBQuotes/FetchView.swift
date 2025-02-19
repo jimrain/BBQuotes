@@ -40,7 +40,8 @@ struct FetchView: View {
                                 .padding(.horizontal)
                             
                             ZStack(alignment: .bottom) {
-                                AsyncImage(url: vm.character.images[0]) { image in
+                                // Coding challange 2 - changed from image[0] to randomImage. Super easy!
+                                AsyncImage(url: vm.character.images.randomElement()) { image in
                                     image
                                         .resizable()
                                         .scaledToFill()
