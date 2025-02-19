@@ -113,6 +113,10 @@ struct FetchView: View {
                 }
             }
             .frame(width: geo.size.width, height: geo.size.height)
+            // For coding challenge 1 - when the view loads get a random quote automatically. 
+            .task {
+                await vm.getQuoteData(for: show)
+            }
         }
         .ignoresSafeArea()
         .toolbarBackgroundVisibility(.visible, for: .tabBar)
