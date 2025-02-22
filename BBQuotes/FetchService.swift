@@ -52,7 +52,7 @@ struct FetchService {
         return characters[0]
     }
     
-    func fetchRandomCharacter(from show: String) async throws -> Char {
+    func fetchRandomCharacter() async throws -> Char {
         let randomCharacterURL = baseURL.appending(path: "characters/random")
         let (data, response) = try await URLSession.shared.data(from: randomCharacterURL)
         

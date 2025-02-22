@@ -16,6 +16,7 @@ class ViewModel {
         case fetching
         case successQuote
         case successEpisode
+        case successCharacter
         case fail(error: Error)
     }
     
@@ -65,6 +66,33 @@ class ViewModel {
             status = .successEpisode
         } catch {
             status = .fail(error: error)
+        }
+    }
+    
+    func getCharacter(for show: String) async {
+        status = .fetching
+        let maxRetries = 10
+        var numRetries = 0
+        
+        repeat {
+            do {
+                character = try await fetcher.fetchRandomCharacter()
+                if character.productions.contains(show) {
+                    character.death = try await fetcher.fetchDeath(for: character.name)
+                    status = .successCharacter
+                    break
+                }
+            } catch {
+                status = .fail(error: error)
+            }
+            numRetries += 1
+        } while numRetries < maxRetries
+        
+        switch status {
+        case .fetching:
+            status = .fail(error: NSError(domain: "Character not found", code: 404, userInfo: nil))
+        default:
+            status = status
         }
     }
 }

@@ -65,6 +65,9 @@ struct FetchView: View {
                         case .successEpisode:
                             EpisodeView(episode: vm.episode)
                             
+                        case .successCharacter:
+                            CharacterView(character: vm.character, show: show)
+                            
                         case .fail(let error):
                             Text(error.localizedDescription)
                         }
@@ -97,6 +100,23 @@ struct FetchView: View {
                                 
                             } label: {
                                 Text("Get Random Episode")
+                                    .font(.title3)
+                                    .foregroundStyle(.white)
+                                    .padding()
+                                    .background(Color("\(show.removeSpaces())Button"))
+                                    .clipShape(.rect(cornerRadius: 7))
+                                    .shadow(color: Color("\(show.removeSpaces())Button"), radius: 2)
+                            }
+                            
+                            Spacer()
+                            
+                            Button {
+                                Task {
+                                    await vm.getCharacter(for: show)
+                                }
+                                
+                            } label: {
+                                Text("Get Random Character")
                                     .font(.title3)
                                     .foregroundStyle(.white)
                                     .padding()
