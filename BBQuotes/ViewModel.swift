@@ -17,6 +17,7 @@ class ViewModel {
         case successQuote
         case successEpisode
         case successCharacter
+        case successRandomQuote
         case fail(error: Error)
     }
     
@@ -51,6 +52,17 @@ class ViewModel {
             character = try await fetcher.fetchCharacter(quote.character)
             character.death = try await fetcher.fetchDeath(for: character.name)
             status = .successQuote
+        } catch {
+            status = .fail(error: error)
+        }
+    }
+    
+    func getRandomQuoteData(for character: String) async {
+        status = .fetching
+        
+        do {
+            quote = try await fetcher.fetchQuote(for: character)
+            status = .successRandomQuote
         } catch {
             status = .fail(error: error)
         }

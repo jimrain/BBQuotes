@@ -68,6 +68,9 @@ struct FetchView: View {
                         case .successCharacter:
                             CharacterView(character: vm.character, show: show)
                             
+                        case .successRandomQuote:
+                            Text("Shouldn't get here")
+                            
                         case .fail(let error):
                             Text(error.localizedDescription)
                         }
@@ -116,7 +119,7 @@ struct FetchView: View {
                                 }
                                 
                             } label: {
-                                Text("Get Random Character")
+                                Text("Get Random Char")
                                     .font(.title3)
                                     .foregroundStyle(.white)
                                     .padding()

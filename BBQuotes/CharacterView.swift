@@ -10,6 +10,7 @@ import SwiftUI
 struct CharacterView: View {
     let character: Char
     let show: String
+    let vm = ViewModel()
     
     var body: some View {
         GeometryReader { geo in
@@ -52,6 +53,51 @@ struct CharacterView: View {
                                 .font(.title2)
                             
                             Text("Born \(character.birthday)")
+                            
+                            Divider()
+                            
+                            HStack {
+                                switch vm.status {
+                                case .notStarted:
+                                    EmptyView()
+                                case .fetching:
+                                    ProgressView()
+                                case .successRandomQuote:
+                                    Text("\"\(vm.quote.quote)\"")
+                                        .minimumScaleFactor(0.5)
+                                        .multilineTextAlignment(.center)
+                                        // .foregroundStyle(.white)
+                                        .padding()
+                                        // .background(.black.opacity(0.5))
+                                        // .clipShape(.rect(cornerRadius: 25))
+                                        //.padding(.horizontal)
+                                    
+                                case .fail(let error):
+                                    Text(error.localizedDescription)
+                                    
+                                default:
+                                    // Should not get here.
+                                    EmptyView()
+                                }
+                                Button {
+                                    Task {
+                                        await vm.getRandomQuoteData(for: character.name)
+                                    }
+                                } label: {
+                                    Text("Get Quote")
+                                        //.font(.title3)
+                                        .foregroundStyle(.white)
+                                        .padding()
+                                        .background(Color("\(show.removeSpaces())Button"))
+                                        .clipShape(.rect(cornerRadius: 7))
+                                        .shadow(color: Color("\(show.removeSpaces())Button"), radius: 2)
+                                }
+                                .frame(maxWidth: .infinity, alignment: .trailing)
+                                
+                            }
+                            .task {
+                                await vm.getRandomQuoteData(for: character.name)
+                            }
                             
                             Divider()
                             
