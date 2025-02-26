@@ -6,6 +6,7 @@
 //
 
 struct Quote: Decodable {
-    let quote: String
+    // quote needs to be a var because we might change it if it's a simpsons quote. 
+    var quote: String
     let character: String
 }

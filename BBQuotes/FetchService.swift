@@ -14,22 +14,59 @@ struct FetchService {
     
     private let baseURL = URL(string: "https://breaking-bad-api-six.vercel.app/api")!
     
+    private func shouldQuoteSimpsons() -> Bool {
+        // This function will return true randomly about 10% of the time. 
+        var simpsons = false
+        let randomInt = Int.random(in: 1...10)
+        if randomInt == 1 {
+            simpsons = true
+        }
+        return simpsons
+        // return true
+    }
+    
+    func fetchSimpsonsQuote() async throws -> String {
+        let fetchURL = URL(string: "https://thesimpsonsquoteapi.glitch.me/quotes")!
+        let (data, response) = try await URLSession.shared.data(from: fetchURL)
+        
+        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+            throw FetchError.badResponse
+        }
+        let simpsonsQuote = try JSONDecoder().decode([Quote].self, from: data)
+        
+        // print("Getting Simpsons Quote...")
+        return simpsonsQuote[0].quote
+    }
+    
     // https://breaking-bad-api-six.vercel.app/api/quotes/random?production=Breaking+Bad
     func fetchQuote(from show: String) async throws -> Quote {
         // Build fetch url
+        
+        // var fetchURL: URL
+        // var quote: Quote
+        
         let quoteURL = baseURL.appending(path: "quotes/random")
         let fetchURL = quoteURL.appending(queryItems: [URLQueryItem(name: "production", value: show)])
-        
+    
         // Fetch data
         let (data, response) = try await URLSession.shared.data(from: fetchURL)
-        
         // Handle Response
         guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
             throw FetchError.badResponse
         }
-        // Decode Data
-        let quote = try JSONDecoder().decode(Quote.self, from: data)
         
+        /* JMR - cool way to print out response body.
+        let responseData = String(data: data, encoding: String.Encoding(rawValue: NSUTF8StringEncoding))!
+        print("Data: \(responseData)")
+         */
+        
+        // Decode Data
+
+        var quote = try JSONDecoder().decode(Quote.self, from: data)
+        
+        if shouldQuoteSimpsons() {
+            quote.quote = try await fetchSimpsonsQuote()
+        }
         // return quote
         return quote
     }
